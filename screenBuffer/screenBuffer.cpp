@@ -5,8 +5,8 @@
 #include <windows.h>
 #include <conio.h>
 
+// 1. Создание и активания буфера экрана
 int bufferCreationActivation() {
-    // 1. Создание и активания буфера экрана
     
     HANDLE hStdOutOld, hStdOutNew;
     DWORD dwWritten;
@@ -60,9 +60,8 @@ int bufferCreationActivation() {
        
 }
 
-
+// 2. Вывод на экран информации о буфере экрана
 int OutOnScreen() {
-    // 2. Вывод на экран информации о буфере экрана
     HANDLE hStdOut;
     CONSOLE_SCREEN_BUFFER_INFO csbi;
 
@@ -85,9 +84,9 @@ int OutOnScreen() {
 
 }
 
+// 3. Установка новых размеров буфера экрана
 int newScreenBuffer() {
 
-    // 3. Установка новых размеров буфера экрана
 
     COORD coord;
     HANDLE hStdOut;
@@ -109,8 +108,9 @@ int newScreenBuffer() {
     return 0;
 }
 
+// 4. Чтение и запись на консоль
+
 int InputAndOutput() {
-    // 4. Чтение и запись на консоль
 
     HANDLE hStdOut, hStdIn;
     DWORD dwWritten, dwRead;
@@ -141,8 +141,33 @@ int InputAndOutput() {
     return 0;
 }
 
+
+// 5. Чтение и установка параметров курсора
+int ReadAndSetCursor() {
+    char c;
+    HANDLE hStdOut;
+    CONSOLE_CURSOR_INFO cci;
+    hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    if (!GetConsoleCursorInfo(hStdOut, &cci))
+    
+        std::cout << "Get console cursor info failed." << std::endl;
+    std::cout << "Size if cursor in procents of char = " << cci.dwSize << std::endl;
+    std::cout << "Visibility of cursor = " << cci.bVisible << std::endl;
+    std::cout << "Input a new size of cursor (1-100): ";
+    std::cin >> cci.dwSize;
+    if (!SetConsoleCursorInfo(hStdOut, &cci))
+        std::cout << "Set console cursor info failed." << std::endl;
+    std::cout << "Input any char to make the cursor invisible: ";
+    std::cin >> c;
+    cci.bVisible = TRUE;
+    if (!SetConsoleCursorInfo(hStdOut, &cci))
+        std::cout << "Set console cursor info failed." << std::endl;
+    return 0;
+}
+
 int main()
 {
-    InputAndOutput();
+    ReadAndSetCursor();
 }
 
