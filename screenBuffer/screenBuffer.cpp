@@ -109,9 +109,40 @@ int newScreenBuffer() {
     return 0;
 }
 
+int InputAndOutput() {
+    // 4. Чтение и запись на консоль
+
+    HANDLE hStdOut, hStdIn;
+    DWORD dwWritten, dwRead;
+    char buffer[80];
+    char str[] = "Input any string: ";
+    char c;
+    hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    hStdIn = GetStdHandle(STD_INPUT_HANDLE);
+    if (hStdOut == INVALID_HANDLE_VALUE || hStdIn == INVALID_HANDLE_VALUE)
+    {
+        std::cout << "Get standard handle failed." << std::endl;
+        return GetLastError();
+    }
+
+    if (!WriteConsole(hStdOut, &str, sizeof(str), &dwWritten, NULL))
+    {
+        std::cout << "Write console failed." << std::endl;
+        return GetLastError();
+    }
+
+    if (!ReadConsole(hStdIn, &buffer, sizeof(buffer), &dwRead, NULL))
+    {
+        std::cout << "Read console failed." << std::endl;
+        return GetLastError();
+    }
+    std::cout << "Input any char to exit: ";
+    std::cin >> c;
+    return 0;
+}
 
 int main()
 {
-    newScreenBuffer();
+    InputAndOutput();
 }
 
