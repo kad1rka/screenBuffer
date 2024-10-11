@@ -166,8 +166,30 @@ int ReadAndSetCursor() {
     return 0;
 }
 
+// 6. Установка курсора в новую позицию
+int SetCurosorANewPosition() {
+    char c;
+    HANDLE hStdOut;
+    COORD coord;
+    hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    std::cout << "Input new cursor position." << std::endl;
+    std::cout << "X = ";
+    std::cin >> coord.X;
+    std::cout << "Y = ";
+    std::cin >> coord.Y;
+    if (!SetConsoleCursorPosition(hStdOut, coord)) {
+        std::cout << "Set cursor position failed." << std::endl;
+        return GetLastError();
+
+    }
+    std::cout << "This is a new position." << std::endl;
+    std::cout << "Input any char to exit: ";
+    std::cin >> c;
+    return 0;
+}
+
 int main()
 {
-    ReadAndSetCursor();
+    SetCurosorANewPosition();
 }
 
